@@ -55,7 +55,6 @@ ReserveFile ".\UAC.dll"
 
 ; Additional Windows definitions
 !define BCM_SETSHIELD 0x0000160c
-!define PF_XMMI_INSTRUCTIONS_AVAILABLE 6
 !define PF_XMMI64_INSTRUCTIONS_AVAILABLE 10
 
 !define MUI_ICON ".\Icon.ico"
@@ -107,10 +106,10 @@ Function .onInit
 			Quit
 		${EndIf}
 
-		System::Call 'kernel32::IsProcessorFeaturePresent(i${PF_XMMI_INSTRUCTIONS_AVAILABLE})i.r0'
+		System::Call 'kernel32::IsProcessorFeaturePresent(i${PF_XMMI64_INSTRUCTIONS_AVAILABLE})i.r0'
 		${If} $0 = 0
 			${IfNot} ${Silent}
-				MessageBox MB_OK|MB_ICONSTOP "Rainmeter requires a Pentium III or later processor."
+				MessageBox MB_OK|MB_ICONSTOP "Rainmeter requires a Pentium 4 or later processor."
 			${EndIf}
 			SetErrorLevel ${ERROR_UNSUPPORTED}
 			Quit
