@@ -6,6 +6,9 @@
  * obtain one at <https://www.gnu.org/licenses/gpl-2.0.html>. */
 
 !verbose 3
+
+Unicode true
+
 !addplugindir ".\"
 !include "MUI2.nsh"
 !include "x64.nsh"
@@ -39,9 +42,9 @@ ShowInstDetails nevershow
 AllowSkipFiles off
 XPStyle on
 OutFile "..\${OUTFILE}"
-ReserveFile "${NSISDIR}\Plugins\LangDLL.dll"
-ReserveFile "${NSISDIR}\Plugins\nsDialogs.dll"
-ReserveFile "${NSISDIR}\Plugins\System.dll"
+ReserveFile "${NSISDIR}\Plugins\x86-unicode\LangDLL.dll"
+ReserveFile "${NSISDIR}\Plugins\x86-unicode\nsDialogs.dll"
+ReserveFile "${NSISDIR}\Plugins\x86-unicode\System.dll"
 ReserveFile ".\UAC.dll"
 
 !define REQUIREDSPACE 5 ; Minimum required space for install (in MB)
@@ -54,7 +57,6 @@ ReserveFile ".\UAC.dll"
 !define ERROR_CLOSEFAIL		7
 
 ; Additional Windows definitions
-!define BCM_SETSHIELD 0x0000160c
 !define PF_XMMI64_INSTRUCTIONS_AVAILABLE 10
 
 !define MUI_ICON ".\Icon.ico"
