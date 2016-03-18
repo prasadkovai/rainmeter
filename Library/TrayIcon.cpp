@@ -114,15 +114,25 @@ bool TrayIcon::AddTrayIcon()
 
 bool TrayIcon::IsTrayIconReady()
 {
-	NOTIFYICONIDENTIFIER nii = { sizeof(NOTIFYICONIDENTIFIER) };
-	nii.hWnd = m_Window;
-	nii.uID = IDI_TRAY;
-	RECT rect;
+	// In Windows 10, NIM_MODIFY sometimes returns |TRUE| when called before NIM_ADD.
+	if (IsWindows7OrGreater())
+	{
+		NOTIFYICONIDENTIFIER nii = { sizeof(NOTIFYICONIDENTIFIER) };
+		nii.hWnd = m_Window;
+		nii.uID = IDI_TRAY;
+		RECT rect;
 
-	HRESULT hr = Shell_NotifyIconGetRect(&nii, &rect);
-	if (FAILED(hr)) return false;
-	
-	return true;
+		HRESULT hr = Shell_NotifyIconGetRect(&nii, &rect);
+		if (FAILED(hr)) return false;
+
+		return true;
+	}
+
+	NOTIFYICONDATA tnid = { sizeof(NOTIFYICONDATA) };
+	tnid.hWnd = m_Window;
+	tnid.uID = IDI_TRAY;
+
+	return Shell_NotifyIcon(NIM_MODIFY, &tnid) != FALSE;
 }
 
 void TrayIcon::TryAddTrayIcon()
