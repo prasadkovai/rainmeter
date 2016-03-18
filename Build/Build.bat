@@ -8,7 +8,7 @@ set GIT=%PROGRAMFILES%\Git\bin\git.exe
 :: Set VERSION_REVISION to non-zero value to override
 set VERSION_MAJOR=3
 set VERSION_MINOR=3
-set VERSION_SUBMINOR=0
+set VERSION_SUBMINOR=1
 set VERSION_REVISION=0
 set ISBETA=true
 
@@ -26,7 +26,11 @@ set MSBUILD="msbuild.exe" /nologo^
 	/p:Configuration=Release
 
 if exist "Certificate.bat" call "Certificate.bat" > nul
-set SIGNTOOL="signtool.exe" sign /t http://time.certum.pl /f "%CERTFILE%" /p "%CERTKEY%"
+:: http://time.certum.pl/
+:: http://timestamp.comodoca.com/authenticode
+:: http://timestamp.verisign.com/scripts/timestamp.dll
+:: http://timestamp.globalsign.com/scripts/timestamp.dll
+set SIGNTOOL="signtool.exe" sign /t http://timestamp.comodoca.com/authenticode /f "%CERTFILE%" /p "%CERTKEY%"
 
 if "%1" == "BUILDLANGUAGES" goto BUILDLANGUAGES
 
