@@ -115,14 +115,16 @@ bool TrayIcon::AddTrayIcon()
 bool TrayIcon::IsTrayIconReady()
 {
 	// In Windows 10, NIM_MODIFY sometimes returns |TRUE| when called before NIM_ADD.
-	if (IsWindows7OrGreater())
+	auto notifyIconGetRectFunc =
+		(decltype(Shell_NotifyIconGetRect)*)GetProcAddress(GetModuleHandle(L"shell32"), "Shell_NotifyIconGetRect");
+	if (notifyIconGetRectFunc)
 	{
 		NOTIFYICONIDENTIFIER nii = { sizeof(NOTIFYICONIDENTIFIER) };
 		nii.hWnd = m_Window;
 		nii.uID = IDI_TRAY;
 		RECT rect;
 
-		HRESULT hr = Shell_NotifyIconGetRect(&nii, &rect);
+		HRESULT hr = notifyIconGetRectFunc(&nii, &rect);
 		if (FAILED(hr)) return false;
 
 		return true;
